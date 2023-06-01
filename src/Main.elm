@@ -147,11 +147,11 @@ update msg model =
             ( { model
                 | eyePoint =
                     let
-                        newEyePoint =
+                        desiredEyePoint =
                             movePlayer deltaMs model
 
                         zHeight =
-                            Point3d.zCoordinate newEyePoint
+                            Point3d.zCoordinate desiredEyePoint
                                 |> Quantity.divideBy -2
 
                         playerBoundingBox =
@@ -160,7 +160,7 @@ update msg model =
                                 , Length.meters 0.5
                                 , Length.meters 1.8
                                 )
-                                (newEyePoint
+                                (desiredEyePoint
                                     |> Point3d.translateIn Direction3d.negativeZ zHeight
                                 )
 
@@ -176,10 +176,25 @@ update msg model =
                                                 Nothing
                                     )
                                 |> Debug.log "collisions"
+
+                        finalEyePoint =
+                            collisions
+                                |> List.foldl
+                                    (\boundingBox eyePoint ->
+                                        let
+                                            ( x, y, _ ) =
+                                                BoundingBox3d.dimensions boundingBox
+                                        in
+                                        eyePoint
+                                            |> Point3d.translateIn Direction3d.positiveX y
+                                            |> Point3d.translateIn Direction3d.positiveY x
+                                    )
+                                    desiredEyePoint
                     in
+                    -- finalEyePoint
                     case collisions of
                         [] ->
-                            newEyePoint
+                            desiredEyePoint
 
                         _ ->
                             model.eyePoint
