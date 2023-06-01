@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="/elm.js"></script>
+    <script>
+      // const SETTINGS_KEY = "settings";
+
+      // let maybeSettings = localStorage.getItem(SETTINGS_KEY);
+
+      // if (maybeSettings) {
+      //   maybeSettings = JSON.parse(maybeSettings);
+      // }
+
+      // if (maybeCachedSystems) {
+      //   maybeCachedSystems = JSON.parse(maybeCachedSystems);
+      // }
+
+      const app = Elm.Main.init({
+        // flags: {
+        //   settings: maybeSettings,
+        // },
+      });
+
+      // app.ports.storeSettings.subscribe(function (settings) {
+      //   localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      // });
+
+      // app.ports.openModal.subscribe(function (id) {
+      //   const modalEl = document.getElementById(id);
+
+      //   modalEl?.showModal();
+      // });
+
+      // app.ports.closeModal.subscribe(function (id) {
+      //   const modalEl = document.getElementById(id);
+
+      //   modalEl?.close();
+      // });
+
+      requestAnimationFrame(function () {
+        const gameCanvas = document.getElementById("game-window");
+        gameCanvas.addEventListener("click", function () {
+          gameCanvas.requestPointerLock();
+        });
+      });
+
+      document.addEventListener("pointerlockchange", lockChangeAlert, false);
+
+      function lockChangeAlert() {
+        app.ports.pointerLocked.send(document.pointerLockElement != null);
+      }
+    </script>
+  </body>
+</html>

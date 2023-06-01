@@ -1,0 +1,19 @@
+{
+  "name": "elm-fps",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "run-pty run-pty.json",
+    "dev:elm": "elm-watch hot",
+    "dev:server": "web-dev-server --root-dir public --app-index public/index.html --open",
+    "dev:review": "elm-review --watch --fix",
+    "review": "elm-review --fix--all",
+    "build": "elm-review && elm-watch make --optimize"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.2.1",
+    "elm-review": "^2.10.1",
+    "elm-test": "^0.19.1-revision12",
+    "elm-watch": "^1.1.2",
+    "run-pty": "^4.0.3"
+  }
+}
